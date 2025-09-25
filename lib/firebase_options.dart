@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'nexa-80d73.firebasestorage.app',
     iosBundleId: 'com.example.nexa',
   );
+
 }
