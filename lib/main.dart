@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Nexa',
-      home: Text('Hola nexa!'),
+      home: Text('Hola nexa'),
     );
   }
 }
