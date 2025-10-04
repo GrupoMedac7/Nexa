@@ -47,4 +47,6 @@ app.*.map.json
 # Firebase configuration files
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
-android/app/google-services.json
+
+# Firestore seeding tool
+/firestore_seed/nexa-80d73-firebase-adminsdk-fbsvc-88026975f0.json
