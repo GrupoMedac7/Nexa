@@ -48,3 +48,6 @@ app.*.map.json
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
+
+# Firestore configuration
+firestore_seed/nexa-80d73-firebase-adminsdk-fbsvc-88026975f0.json
