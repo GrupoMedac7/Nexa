@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexa/services/auth_gate.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nexa/core/theme_provider.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       builder: (context, isDark, _) {
         return MaterialApp(
           title: 'Nexa',
-          home: Text("Hola Nexa"),
+          home: AuthGate(),
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
