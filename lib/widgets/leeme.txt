@@ -1,0 +1,2 @@
+Aquí van widgets globales (barra de navegación, switch del tema...). Los widgets específicos para cada página van en
+lib/views/$NOMBRE_DE_LA_PÁGINA/widgets

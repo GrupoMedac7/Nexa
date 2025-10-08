@@ -1,0 +1,3 @@
+Las clases de esta carpeta se encargan de separar la lógica de la aplicación con la lógica de Firestore. Se encargan
+de realizar todas las operaciones de lectura y escritura a la base de datos, devolviendo al desarrollador un modelo
+de datos interno a la aplicación (ProductModel, UserModel).

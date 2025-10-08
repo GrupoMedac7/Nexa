@@ -5,12 +5,6 @@ enum Theme {
   light,
 }
 
-enum Role {
-  admin,
-  employee,
-  user,
-}
-
 class UserPreferences {
   final bool notifications;
   final Theme theme;
@@ -31,7 +25,7 @@ class UserModel {
   final String email;
   final String name;
   final UserPreferences preferences;
-  final List<Role> roles;
+  final bool isAdmin;
   final DateTime createdAt;
 
   UserModel({
@@ -39,7 +33,7 @@ class UserModel {
     required this.email,
     required this.name,
     this.preferences = const UserPreferences(),
-    this.roles = const [Role.user],
+    required this.isAdmin,
     required this.createdAt,
   });
 
@@ -53,7 +47,7 @@ class UserModel {
         notifications: data['preferences']['notifications'] ?? false,
         theme: _themeFromString(data['preferences']['theme']),
       ),
-      roles: _rolesFromList(data['roles']),
+      isAdmin: data['isAdmin'] ?? false,
       createdAt: _parseCreatedAt(data['created_at'])
     );
   }
@@ -61,16 +55,6 @@ class UserModel {
   // Helper function for converting theme preferences to enum Theme
   static Theme _themeFromString(String theme) {
     return theme == 'dark' ? Theme.dark : Theme.light;
-  }
-
-  // Helper function for converting user roles from string to enum Role
-  static List<Role> _rolesFromList(List<String> strRoles) {
-    return strRoles.map<Role>((e) {
-      return Role.values.firstWhere(
-        (role) => role.name == e,
-        orElse: () => Role.user,
-      );
-    }).toList();
   }
 
   static DateTime _parseCreatedAt(dynamic createdAt) {
@@ -90,7 +74,7 @@ class UserModel {
       'email': email,
       'name': name,
       'preferences': preferences,
-      'roles': roles,
+      'isAdmin': isAdmin,
       'created_at': Timestamp.fromDate(createdAt)
     };
   }
@@ -100,7 +84,7 @@ class UserModel {
     String? email,
     String? name,
     UserPreferences? preferences,
-    List<Role>? roles,
+    bool? isAdmin,
     DateTime? createdAt,
   }) {
     return UserModel(
@@ -108,13 +92,13 @@ class UserModel {
       email: email ?? this.email,
       name: name ?? this.name,
       preferences: preferences ?? this.preferences,
-      roles: roles ?? this.roles,
+      isAdmin: isAdmin ?? this.isAdmin,
       createdAt: createdAt ?? this.createdAt,
     );
   }
 
   @override
   String toString() {
-    return 'Usermodel(uid: $uid, email: $email, name: $name, preferences: $preferences, roles: $roles, createdAt: $createdAt)';
+    return 'Usermodel(uid: $uid, email: $email, name: $name, preferences: $preferences, isAdmin: $isAdmin, createdAt: $createdAt)';
   }
 }

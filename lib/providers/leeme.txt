@@ -1,0 +1,3 @@
+Esta carpeta contiene clases que gestionan el estado actual de los productos y usuarios cargados de Firestore.
+Se usa para almacenar datos que necesita la UI, actualizar estos cuando cambien y notificar a los widgets que los
+necesitan. En definitiva se encarga de exponer los datos de la base de datos al resto de la aplicación.

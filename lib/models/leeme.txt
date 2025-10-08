@@ -1,0 +1,5 @@
+Aquí van las clases para trabajar con los modelos de datos de Firestore. Estos modelos exponen una serie de atributos que se
+corresponden directamente con los campos de cada documento de una colección determinada. Por ejemplo, la colección 'products'
+tiene su correspondiente 'product_model.dart', donde se exponen métodos para cargar desde la base de datos a la aplicación
+(el método factory) y de la aplicación a la base de datos (toMap()), así como otros métodos de ayuda para hacer copias de
+productos o usuarios.

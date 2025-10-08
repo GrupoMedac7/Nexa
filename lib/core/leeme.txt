@@ -1,0 +1,4 @@
+Aquí van los elementos de configuración global de la aplicación: colores, fuentes, temas. En la medida de lo posible
+es siempre preferible cambiar esta configuración antes que tener que poner a mano en cada widget el estilo que se quiere,
+puesto que si el día de mañana hay que refactorizar o cambiar algo, todo aquello que esté codificado a mano va a tenerse
+que cambiar a mano. Tú mismo.
