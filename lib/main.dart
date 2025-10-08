@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       builder: (context, isDark, _) {
         return MaterialApp(
           title: 'Nexa',
-          home: AuthGate(),
+          home: const AuthGate(),
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: isDark ? ThemeMode.dark : ThemeMode.light,

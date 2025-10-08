@@ -14,7 +14,7 @@ class ProductProvider with ChangeNotifier {
   String? _error;
   String? get error => _error;
 
-  Future<void> loadTest(String productId) async {
+  Future<void> loadProduct(String productId) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -27,7 +27,7 @@ class ProductProvider with ChangeNotifier {
         _error = 'Product no encontrado';
       }
     } catch (e) {
-      _error = 'Error al cargar test';
+      _error = 'Error al cargar producto';
       print('[Product provider] Error: $e');
     } finally {
       _isLoading = false;

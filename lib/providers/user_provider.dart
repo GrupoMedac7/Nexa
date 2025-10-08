@@ -14,7 +14,7 @@ class UserProvider with ChangeNotifier {
   String? _error;
   String? get error => _error;
 
-  Future<void> loadTest(String userId) async {
+  Future<void> loadUser(String userId) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -27,7 +27,7 @@ class UserProvider with ChangeNotifier {
         _error = 'User no encontrado';
       }
     } catch (e) {
-      _error = 'Error al cargar test';
+      _error = 'Error al cargar usuario';
       print('[User provider] Error: $e');
     } finally {
       _isLoading = false;
