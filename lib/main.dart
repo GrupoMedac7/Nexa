@@ -7,9 +7,7 @@ import 'package:nexa/core/theme_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());
 }
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       builder: (context, isDark, _) {
         return MaterialApp(
           title: 'Nexa',
-          home: const AuthGate(),
+          home: AuthGate(),
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
