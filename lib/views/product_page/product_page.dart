@@ -45,17 +45,15 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Name + Brand row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: isEditing
@@ -65,21 +63,20 @@ class _ProductPageState extends State<ProductPage> {
                         )
                       : Text(
                           widget.productModel.name,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                 ),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: isEditing
-                      ? TextField(
-                          controller: brandController,
-                          decoration: const InputDecoration(labelText: 'Brand'),
-                        )
-                      : Text(
-                          widget.productModel.brand,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                ),
+                isEditing
+                    ? TextField(
+                        controller: brandController,
+                        decoration: const InputDecoration(labelText: 'Brand'),
+                      )
+                    : Text(
+                        widget.productModel.brand,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
               ],
             ),
 
@@ -95,7 +92,9 @@ class _ProductPageState extends State<ProductPage> {
                     ? Expanded(
                         child: TextField(
                           controller: categoryController,
-                          decoration: const InputDecoration(labelText: 'Category'),
+                          decoration: const InputDecoration(
+                            labelText: 'Category',
+                          ),
                         ),
                       )
                     : Chip(
@@ -143,6 +142,7 @@ class _ProductPageState extends State<ProductPage> {
               height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 color: AppTheme.palette['grey'],
+                borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
                   image: NetworkImage(widget.productModel.imageRef),
                   fit: BoxFit.cover,

@@ -25,12 +25,6 @@ class AppTheme {
 
     scaffoldBackgroundColor: palette['light_blue'],
 
-    textTheme: TextTheme(
-      titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      bodyMedium: TextStyle(fontSize: 16),
-      bodySmall: TextStyle(fontSize: 14),
-    ),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: palette['dark_purple'],
@@ -85,12 +79,6 @@ class AppTheme {
     primaryColor: palette['dark_purple'],
 
     scaffoldBackgroundColor: palette['dark_blue'],
-
-    textTheme: TextTheme(
-      titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      bodyMedium: TextStyle(fontSize: 16),
-      bodySmall: TextStyle(fontSize: 14),
-    ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
