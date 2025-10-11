@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexa/core/theme_provider.dart';
+import 'package:nexa/core/themes.dart';
 import 'package:nexa/models/product_model.dart';
 
 class ProductPage extends StatefulWidget {
@@ -71,10 +71,10 @@ class _ProductPageState extends State<ProductPage> {
                     child: isEditing
                         ? TextField(
                             controller: nameController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Nombre del producto',
                             ),
-                            style: Theme.of(context).textTheme.titleMedium
+                            style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(color: AppTheme.palette['black']),
                           )
                         : Text(
@@ -90,9 +90,9 @@ class _ProductPageState extends State<ProductPage> {
                     child: isEditing
                         ? TextField(
                             controller: brandController,
-                            decoration: const InputDecoration(
-                              labelText: 'Marca',
-                            ),
+                            decoration: InputDecoration(labelText: 'Marca'),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppTheme.palette['black']),
                           )
                         : Text(
                             widget.productModel.brand,
@@ -148,9 +148,11 @@ class _ProductPageState extends State<ProductPage> {
                               child: TextField(
                                 controller: stockController,
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  labelText: 'Stock',
-                                ),
+                                decoration: InputDecoration(labelText: 'Stock'),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: AppTheme.palette['black'],
+                                    ),
                               ),
                             )
                           : Text(
@@ -166,15 +168,24 @@ class _ProductPageState extends State<ProductPage> {
                           child: TextField(
                             controller: priceController,
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              labelText: 'Precio',
-                            ),
+                            decoration: InputDecoration(labelText: 'Precio'),
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(color: AppTheme.palette['black']),
                           ),
                         )
                       : Text(
                           '${widget.productModel.price.toStringAsFixed(2)}€',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 1,
+                                    color: AppTheme.palette['grey']!,
+                                  ),
+                                ],
+                              ),
                         ),
                 ],
               ),
@@ -193,9 +204,9 @@ class _ProductPageState extends State<ProductPage> {
                       ? Expanded(
                           child: TextField(
                             controller: categoryController,
-                            decoration: const InputDecoration(
-                              labelText: 'Categoría',
-                            ),
+                            decoration: InputDecoration(labelText: 'Categoría'),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: AppTheme.palette['black']),
                           ),
                         )
                       : Chip(
@@ -209,7 +220,7 @@ class _ProductPageState extends State<ProductPage> {
 
                   Row(
                     children: [
-                      // Edit / Check button
+                      // Edit / check button
                       IconButton(
                         icon: Icon(
                           isEditing ? Icons.check_outlined : Icons.edit,
@@ -256,8 +267,9 @@ class _ProductPageState extends State<ProductPage> {
                   ? TextField(
                       controller: descriptionController,
                       maxLines: 3,
-                      decoration: const InputDecoration(
-                        labelText: 'Descripción',
+                      decoration: InputDecoration(labelText: 'Descripción'),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppTheme.palette['black'],
                       ),
                     )
                   : Text(

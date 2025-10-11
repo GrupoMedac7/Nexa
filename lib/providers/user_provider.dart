@@ -40,4 +40,9 @@ class UserProvider with ChangeNotifier {
     _error = null;
     notifyListeners();
   }
+
+  bool isAdmin() {
+    if (_user == null) return false;
+    return _user!.isAdmin;
+  }
 }
