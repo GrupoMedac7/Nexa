@@ -12,6 +12,9 @@ class AppTheme {
     'dark_purple': Color(0xFF6E1FD6),
     'light_blue': Color(0xFFDAF0EE),
     'dark_blue': Color(0xFF160F29),
+    'red': Color(0xFFE01515),
+    'orange': Color(0xFFE08F15),
+    'green': Color(0xFF3EE015),
     'grey': Color(0xFFC4C4C4),
     'black': Color(0xFF000000),
   };
