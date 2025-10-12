@@ -7,8 +7,13 @@ import 'package:nexa/widgets/custom_snack_bar.dart';
 
 class ProductPage extends StatefulWidget {
   final ProductModel productModel;
+  final FirebaseFirestore firestore;
 
-  const ProductPage({super.key, required this.productModel});
+  ProductPage({
+    super.key,
+    required this.productModel,
+    FirebaseFirestore? firestore,
+  }) : firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -27,12 +32,8 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(
-      text: widget.productModel.name,
-    );
-    brandController = TextEditingController(
-      text: widget.productModel.brand,
-    );
+    nameController = TextEditingController(text: widget.productModel.name);
+    brandController = TextEditingController(text: widget.productModel.brand);
     categoryController = TextEditingController(
       text: widget.productModel.category,
     );
@@ -74,7 +75,7 @@ class _ProductPageState extends State<ProductPage> {
           description: descriptionController.text,
         );
 
-        await FirebaseFirestore.instance
+        await widget.firestore
             .collection('products')
             .doc(widget.productModel.id)
             .update(editedProduct.toMap());
@@ -126,7 +127,7 @@ class _ProductPageState extends State<ProductPage> {
     if (confirm != true) return;
 
     try {
-      await FirebaseFirestore.instance
+      await widget.firestore
           .collection('products')
           .doc(widget.productModel.id)
           .delete();
@@ -219,12 +220,23 @@ class _ProductPageState extends State<ProductPage> {
                   decoration: BoxDecoration(
                     color: AppTheme.palette['grey'],
                     borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      image: NetworkImage(widget.productModel.imageRef),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
+                    image: widget.productModel.imageRef.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(widget.productModel.imageRef),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.center,
+                          )
+                        : null,
                   ),
+                  child: widget.productModel.imageRef.isEmpty
+                      ? Center(
+                          child: Icon(
+                            Icons.image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        )
+                      : null,
                 ),
               ),
             ),
@@ -325,10 +337,14 @@ class _ProductPageState extends State<ProductPage> {
                       // Edit / check button
                       IconButton(
                         icon: Icon(
-                          isEditing ? Icons.check_outlined : Icons.edit,
+                          isEditing ? Icons.check : Icons.edit,
                           color: isEditing
-                              ? (AppTheme.isDarkMode.value ? Colors.white : Colors.amber)
-                              : (AppTheme.isDarkMode.value ? Colors.white : Colors.green),
+                              ? (AppTheme.isDarkMode.value
+                                    ? Colors.white
+                                    : Colors.amber)
+                              : (AppTheme.isDarkMode.value
+                                    ? Colors.white
+                                    : Colors.green),
                           weight: 700,
                         ),
                         iconSize: 20,
@@ -339,7 +355,9 @@ class _ProductPageState extends State<ProductPage> {
                       IconButton(
                         icon: Icon(
                           Icons.delete,
-                          color: (AppTheme.isDarkMode.value ? Colors.white : Colors.redAccent),
+                          color: (AppTheme.isDarkMode.value
+                              ? Colors.white
+                              : Colors.redAccent),
                           weight: 700,
                         ),
                         iconSize: 20,
