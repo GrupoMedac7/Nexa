@@ -5,15 +5,19 @@ import 'package:nexa/core/themes.dart';
 class Logger {
   static void log(String message) {
     if (kDebugMode) {
-      print('[LOG]: $message');
+      debugPrint('[LOG]: $message');
     }
   }
 
   static void error(String message, [StackTrace? stacktrace]) {
     if (kDebugMode) {
-      print('[ERROR]: $message');
       if (stacktrace != null) {
-        print(stacktrace);
+        debugPrintStack(
+          label: '[ERROR]: $message',
+          stackTrace: stacktrace,
+        );
+      } else {
+        debugPrint('[ERROR]: $message');
       }
     }
   }

@@ -27,8 +27,12 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.productModel.name);
-    brandController = TextEditingController(text: widget.productModel.brand);
+    nameController = TextEditingController(
+      text: widget.productModel.name,
+    );
+    brandController = TextEditingController(
+      text: widget.productModel.brand,
+    );
     categoryController = TextEditingController(
       text: widget.productModel.category,
     );
@@ -130,20 +134,20 @@ class _ProductPageState extends State<ProductPage> {
       if (!mounted) return;
 
       CustomSnackBar.show(
-          context,
-          'Producto borrado correctamente!',
-          mode: CustomSnackBarMode.succ,
-        );
+        context,
+        'Producto borrado correctamente!',
+        mode: CustomSnackBarMode.succ,
+      );
 
       Navigator.pop(context);
     } catch (e, stack) {
       if (!mounted) return;
 
       CustomSnackBar.show(
-          context,
-          'Error al borrar el producto',
-          mode: CustomSnackBarMode.err,
-        );
+        context,
+        'Error al borrar el producto',
+        mode: CustomSnackBarMode.err,
+      );
 
       Logger.error('Error al borrar el producto: $e', stack);
     }
@@ -323,8 +327,8 @@ class _ProductPageState extends State<ProductPage> {
                         icon: Icon(
                           isEditing ? Icons.check_outlined : Icons.edit,
                           color: isEditing
-                              ? AppTheme.palette['green']
-                              : AppTheme.palette['orange'],
+                              ? (AppTheme.isDarkMode.value ? Colors.white : Colors.amber)
+                              : (AppTheme.isDarkMode.value ? Colors.white : Colors.green),
                           weight: 700,
                         ),
                         iconSize: 20,
@@ -335,7 +339,7 @@ class _ProductPageState extends State<ProductPage> {
                       IconButton(
                         icon: Icon(
                           Icons.delete,
-                          color: AppTheme.palette['red'],
+                          color: (AppTheme.isDarkMode.value ? Colors.white : Colors.redAccent),
                           weight: 700,
                         ),
                         iconSize: 20,
