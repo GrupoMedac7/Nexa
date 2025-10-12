@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final ValueNotifier<bool> isDarkMode = ValueNotifier(false);
 
+  static void toggleTheme() {
+    isDarkMode.value = !isDarkMode.value;
+  }
+
   // Color palette for the project. It is preferable to use colors this way through the application,
   // so there's a centralized way to change colors in the future, even when overwriting light and
   // dark theme defaults.
