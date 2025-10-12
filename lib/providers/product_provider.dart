@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nexa/models/product_model.dart';
 import 'package:nexa/repositories/product_repository.dart';
+import 'package:nexa/services/logger.dart';
 
 class ProductProvider with ChangeNotifier {
   final ProductRepository _repository = ProductRepository();
@@ -26,9 +27,9 @@ class ProductProvider with ChangeNotifier {
       } else {
         _error = 'Product no encontrado';
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
       _error = 'Error al cargar producto';
-      print('[Product provider] Error: $e');
+      Logger.error(_error!, stacktrace);
     } finally {
       _isLoading = false;
       notifyListeners();

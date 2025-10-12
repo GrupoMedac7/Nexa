@@ -1,54 +1,55 @@
-  import 'package:flutter/material.dart';
-  import 'package:firebase_auth/firebase_auth.dart';
-  import 'package:nexa/views/home_page/home_page.dart';
-  import 'package:nexa/views/login_page/login_page.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nexa/views/home_page/home_page.dart';
+import 'package:nexa/views/login_page/login_page.dart';
 
-  class AuthGate extends StatelessWidget {
-    const AuthGate({super.key});
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
 
-    // Helper function to check if the user was logged out or deleted from Firebase but still have a valid token.
-    // This could happen, for example, if the user is deleted but he or she reopens the app before the token expires.
-    Future<void> _verifyUser(User user) async {
-      try {
-        await user.reload();
-        await user.getIdToken(true);
-      } catch (e) {
-        await FirebaseAuth.instance.signOut();
-      }
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      // StreamBuilder listen for changes in a stream and refires the builder function each time the stream changes.
-      // In this case the stream is FirebaseAuth.instance.authStateChanges, and the builder function is the one that
-      // handles what to do in each case (user already logged in, user deleted or not logged in).
-      return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          // Check that the user is still a valid user in Firebase. Use a FutureBuilder so the screen does not flicker
-          // if the user happens to be recently deleted.
-          final user = snapshot.data;
-          if (user != null) {
-            return FutureBuilder(
-              future: _verifyUser(user),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(body: Center(child: CircularProgressIndicator()));
-                }
-                if (snapshot.hasError) {
-                  return const LoginPage();
-                }
-                return const HomePage();
-              },
-            );
-          }
-          // If there is no user info, show a LoginScreen
-          return const LoginPage();
-        }
-      );
+  Future<bool> _verifyUser(User user) async {
+    try {
+      await user.reload();
+      await user.getIdToken(true);
+      return true;
+    } catch (e) {
+      // If verification fails, sign out and return false
+      await FirebaseAuth.instance.signOut();
+      return false;
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // Waiting for FirebaseAuth stream
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final user = snapshot.data;
+        // No user — go to login
+        if (user == null) {
+          return const LoginPage();
+        }
+
+        // Verify user is still a valid user
+        return FutureBuilder<bool>(
+          future: _verifyUser(user),
+          builder: (context, verifySnapshot) {
+            if (verifySnapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+
+            if (verifySnapshot.hasError || verifySnapshot.data == false) return const LoginPage();
+
+            return const HomePage();
+          },
+        );
+      },
+    );
+  }
+}

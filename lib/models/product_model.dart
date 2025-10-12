@@ -1,3 +1,5 @@
+import 'package:nexa/core/constants.dart';
+
 class ProductModel {
   final String id;
   final String name;
@@ -6,6 +8,7 @@ class ProductModel {
   final String brand;
   final int stock;
   final double price;
+  final String imageRef;
 
   ProductModel({
     required this.id,
@@ -15,6 +18,7 @@ class ProductModel {
     required this.brand,
     required this.stock,
     required this.price,
+    this.imageRef =DEFAULT_PRODUCT_IMAGE_REF,
   });
 
   // Create a ProductModel from a Firestore document
@@ -27,6 +31,7 @@ class ProductModel {
       brand: map['brand'] ?? '',
       stock: map['stock'] ?? 0,
       price: (map['price'] ?? 0).toDouble(),
+      imageRef: map['image_ref'],
     );
   }
 
@@ -39,6 +44,7 @@ class ProductModel {
       'brand': brand,
       'stock': stock,
       'price': price,
+      'image_ref': imageRef
     };
   }
 }
