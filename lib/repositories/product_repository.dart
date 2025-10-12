@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexa/models/product_model.dart';
+import 'package:nexa/services/logger.dart';
 
 class ProductRepository {
   final _firestore = FirebaseFirestore.instance;
@@ -11,8 +12,9 @@ class ProductRepository {
       if (doc.exists && doc.data() != null) {
         return ProductModel.fromMap(doc.data()!, doc.id);
       }
-    } catch (e) {
-      print('[product repository] Error al obtener product: $e');
+    } catch (e, stacktrace) {
+      String error = '[product repository] Error al obtener producto: $e';
+      Logger.error(error, stacktrace);
     }
     return null;
   }
@@ -20,16 +22,18 @@ class ProductRepository {
   Future<void> saveProduct(ProductModel product) async {
     try {
       await _firestore.collection(collection).add(product.toMap());
-    } catch (e) {
-      print('[Product repository] Error al guardar usuario: $e');
+    } catch (e, stacktrace) {
+      String error = '[Product repository] Error al guardar producto: $e';
+      Logger.error(error, stacktrace);
     }
   }
 
   Future<void> deleteProduct(String productId) async {
     try {
       await _firestore.collection(collection).doc(productId).delete();
-    } catch (e) {
-      print('[Product repository] Error al borrar product: $e');
+    } catch (e, stacktrace) {
+      String error = '[Product repository] Error al borrar producto: $e';
+      Logger.error(error, stacktrace);
     }
   }
 
@@ -42,8 +46,9 @@ class ProductRepository {
       }).toList();
 
       return productList;
-    } catch (e) {
-      print('[Product repository] Error al obtener usuarios: $e');
+    } catch (e, stacktrace) {
+      String error = '[Product repository] Error al obtener productos: $e';
+      Logger.error(error, stacktrace);
       return [];
     }
   }

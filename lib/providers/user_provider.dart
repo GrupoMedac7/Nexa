@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nexa/models/user_model.dart';
 import 'package:nexa/repositories/user_repository.dart';
+import 'package:nexa/services/logger.dart';
 
 class UserProvider with ChangeNotifier {
   final UserRepository _repository = UserRepository();
@@ -26,9 +27,9 @@ class UserProvider with ChangeNotifier {
       } else {
         _error = 'User no encontrado';
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
       _error = 'Error al cargar usuario';
-      print('[User provider] Error: $e');
+      Logger.error(_error!, stacktrace);
     } finally {
       _isLoading = false;
       notifyListeners();

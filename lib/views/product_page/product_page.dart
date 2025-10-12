@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nexa/core/themes.dart';
 import 'package:nexa/models/product_model.dart';
+import 'package:nexa/services/logger.dart';
+import 'package:nexa/widgets/custom_snack_bar.dart';
 
 class ProductPage extends StatefulWidget {
   final ProductModel productModel;
@@ -49,6 +52,101 @@ class _ProductPageState extends State<ProductPage> {
     stockController.dispose();
     descriptionController.dispose();
     super.dispose();
+  }
+
+  void onEditPressed() async {
+    if (isEditing) {
+      try {
+        final ProductModel editedProduct = ProductModel(
+          id: widget.productModel.id,
+          name: nameController.text,
+          brand: brandController.text,
+          category: categoryController.text,
+          price:
+              double.tryParse(priceController.text) ??
+              widget.productModel.price,
+          stock:
+              int.tryParse(stockController.text) ?? widget.productModel.stock,
+          description: descriptionController.text,
+        );
+
+        await FirebaseFirestore.instance
+            .collection('products')
+            .doc(widget.productModel.id)
+            .update(editedProduct.toMap());
+
+        if (!mounted) return;
+
+        CustomSnackBar.show(
+          context,
+          'Producto editado correctamente!',
+          mode: CustomSnackBarMode.succ,
+        );
+      } catch (e, stack) {
+        if (!mounted) return;
+
+        CustomSnackBar.show(
+          context,
+          'Error al actualizar el producto',
+          mode: CustomSnackBarMode.err,
+        );
+
+        Logger.error('Error al actualizar el producto: $e', stack);
+      }
+    }
+
+    setState(() {
+      isEditing = !isEditing;
+    });
+  }
+
+  void onDeletePressed() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Delete'),
+        content: const Text('Are you sure you want to delete this product?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.productModel.id)
+          .delete();
+
+      if (!mounted) return;
+
+      CustomSnackBar.show(
+          context,
+          'Producto borrado correctamente!',
+          mode: CustomSnackBarMode.succ,
+        );
+
+      Navigator.pop(context);
+    } catch (e, stack) {
+      if (!mounted) return;
+
+      CustomSnackBar.show(
+          context,
+          'Error al borrar el producto',
+          mode: CustomSnackBarMode.err,
+        );
+
+      Logger.error('Error al borrar el producto: $e', stack);
+    }
   }
 
   @override
@@ -105,7 +203,7 @@ class _ProductPageState extends State<ProductPage> {
 
             const SizedBox(height: 8),
 
-            // Image
+            // Imagen
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -230,14 +328,7 @@ class _ProductPageState extends State<ProductPage> {
                           weight: 700,
                         ),
                         iconSize: 20,
-                        onPressed: () {
-                          setState(() {
-                            if (isEditing) {
-                              // TODO: Save logic
-                            }
-                            isEditing = !isEditing;
-                          });
-                        },
+                        onPressed: () => onEditPressed(),
                       ),
 
                       // Delete button
@@ -248,9 +339,7 @@ class _ProductPageState extends State<ProductPage> {
                           weight: 700,
                         ),
                         iconSize: 20,
-                        onPressed: () {
-                          // TODO: Implement delete logic
-                        },
+                        onPressed: () => onDeletePressed(),
                       ),
                     ],
                   ),
