@@ -5,6 +5,15 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Login page');
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/product/5uDkqTCo0ng07nLsRmx8');
+          },
+          child: Text('Go to product page')
+        ),
+      ),
+    );
   }
 }

@@ -87,6 +87,7 @@ class _ProductPageState extends State<ProductPage> {
           'Producto editado correctamente!',
           mode: CustomSnackBarMode.succ,
         );
+        Navigator.pushNamed(context, 'product/${widget.productModel.id}');
       } catch (e, stack) {
         if (!mounted) return;
 

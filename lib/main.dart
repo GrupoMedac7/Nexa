@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nexa/services/router.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:nexa/providers/user_provider.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
           debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          onGenerateRoute: AppRouter.generateRoute,
         );
       },
     );
