@@ -9,9 +9,12 @@ class ThemeSwitch extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: AppTheme.isDarkMode,
       builder: (context, isDark, _) {
-        return Switch(
-          value: isDark,
-          onChanged: (_) => AppTheme.toggleTheme(),
+        return Transform.scale(
+          scale: 0.65,
+          child: Switch(
+            value: isDark,
+            onChanged: (_) => AppTheme.toggleTheme(),
+          ),
         );
       },
     );

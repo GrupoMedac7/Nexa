@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:nexa/core/themes.dart';
 
-class SearchBarWidget extends StatelessWidget {
+class CustomSearchBar extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) onChanged;
 
-  const SearchBarWidget({
+  const CustomSearchBar({
     super.key,
     required this.controller,
     required this.onChanged,
   });
+
+  InputDecoration _inputDecoration(String hint) => InputDecoration(
+    hintText: hint,
+    filled: true,
+    fillColor: AppTheme.palette["light_purple"],
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide.none,
+    ),
+    hintStyle: TextStyle(color: Colors.grey),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +32,7 @@ class SearchBarWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withValues(alpha: .15),
             blurRadius: 4,
             offset: const Offset(2, 2),
           ),
@@ -34,10 +46,8 @@ class SearchBarWidget extends StatelessWidget {
             child: TextField(
               controller: controller,
               onChanged: onChanged,
-              decoration: const InputDecoration(
-                hintText: "Buscar productos...",
-                border: InputBorder.none,
-              ),
+              decoration: _inputDecoration('Buscar productos...'),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ],
