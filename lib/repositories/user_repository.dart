@@ -21,7 +21,10 @@ class UserRepository {
 
   Future<void> saveUser(UserModel user) async {
     try {
-      await _firestore.collection(collection).add(user.toMap());
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(user.toMap());
     } catch (e, stacktrace) {
       String error = '[User repository] Error al guardar usuario: $e';
       Logger.error(error, stacktrace);
@@ -33,6 +36,18 @@ class UserRepository {
       await _firestore.collection(collection).doc(userId).delete();
     } catch (e, stacktrace) {
       String error = '[User repository] Error al borrar user: $e';
+      Logger.error(error, stacktrace);
+    }
+  }
+
+  Future<void> modifyUser(UserModel user) async {
+    try {
+      await _firestore
+          .collection(collection)
+          .doc(user.uid)
+          .update(user.toMap());
+    } catch (e, stacktrace) {
+      String error = '[User repository] Error al actualizar usuario: $e';
       Logger.error(error, stacktrace);
     }
   }

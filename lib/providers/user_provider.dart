@@ -25,15 +25,47 @@ class UserProvider with ChangeNotifier {
       if (fetchedUser != null) {
         _user = fetchedUser;
       } else {
-        _error = 'User no encontrado';
+        _error = 'Usuario no encontrado';
+        Logger.error(_error!);
       }
     } catch (e, stacktrace) {
-      _error = 'Error al cargar usuario';
+      _error = 'Error al cargar usuario: $e';
       Logger.error(_error!, stacktrace);
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> createUser(UserModel user) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      await _repository.saveUser(user);
+    } catch (e, stacktrace) {
+      _error = 'Error al crear usuario: $e';
+      Logger.error(_error!, stacktrace);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> modifyUser(UserModel user) async {
+    _isLoading = true;
+    _error = null;
+
+     try {
+      await _repository.modifyUser(user);
+     } catch (e, stacktrace) {
+      _error = 'Error al modificar usuario: $e';
+      Logger.error(_error!, stacktrace);
+     } finally {
+      _isLoading = false;
+      notifyListeners();
+     }
   }
 
   void clearUser() {
