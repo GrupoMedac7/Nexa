@@ -31,7 +31,7 @@ class ProductModel {
       brand: map['brand'] ?? '',
       stock: map['stock'] ?? 0,
       price: (map['price'] ?? 0).toDouble(),
-      imageRef: map['image_ref'],
+      imageRef: map['image_ref'] ?? DEFAULT_PRODUCT_IMAGE_REF,
     );
   }
 

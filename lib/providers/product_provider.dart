@@ -28,8 +28,58 @@ class ProductProvider with ChangeNotifier {
         _error = 'Product no encontrado';
       }
     } catch (e, stacktrace) {
-      _error = 'Error al cargar producto';
+      _error = 'Error al cargar producto, $e';
       Logger.error(_error!, stacktrace);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<List<ProductModel>> getProducts({
+    String? searchQuery,
+    String? category,
+    int? minPrice,
+    int? maxPrice,
+    int? minStock,
+    int? maxStock,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final products = await _repository.getProducts(
+        searchQuery: searchQuery,
+        category: category,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        minStock: minStock,
+        maxStock: maxStock,
+      );
+      return products;
+    } catch (error, stacktrace) {
+      _error = 'Error al cargar productos';
+      Logger.error(_error!, stacktrace);
+      return [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<List<ProductModel>> getAllproducts() async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final products = await _repository.getAllProducts();
+      return products;
+    } catch (e, stacktrace) {
+      _error = 'Error al cargar productos';
+      Logger.error(_error!, stacktrace);
+      return [];
     } finally {
       _isLoading = false;
       notifyListeners();

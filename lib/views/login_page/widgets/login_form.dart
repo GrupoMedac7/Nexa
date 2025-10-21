@@ -83,6 +83,7 @@ class _LoginFormState extends State<LoginForm> {
               controller: _emailController,
               decoration: _inputDecoration("email@example.com"),
               textInputAction: TextInputAction.next,
+              style: TextStyle(color: Colors.black),
             ),
           ),
 
@@ -94,6 +95,7 @@ class _LoginFormState extends State<LoginForm> {
               controller: _passwordController,
               obscureText: true,
               decoration: _inputDecoration("••••••••"),
+              style: TextStyle(color: Colors.black),
             ),
           ),
 

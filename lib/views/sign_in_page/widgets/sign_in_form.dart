@@ -122,6 +122,7 @@ class _SignInFormState extends State<SignInForm> {
               textInputAction: TextInputAction.next,
               decoration: _inputDecoration('Nombre'),
               validator: _validateName,
+              style: TextStyle(color: Colors.black),
             ),
           ),
 
@@ -135,6 +136,7 @@ class _SignInFormState extends State<SignInForm> {
               textInputAction: TextInputAction.next,
               decoration: _inputDecoration('email@example.com'),
               validator: _validateEmail,
+              style: TextStyle(color: Colors.black),
             ),
           ),
 
@@ -156,6 +158,7 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
               validator: _validatePassword,
+              style: TextStyle(color: Colors.black),
             ),
           ),
 
