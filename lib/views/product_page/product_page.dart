@@ -4,6 +4,7 @@ import 'package:nexa/core/themes.dart';
 import 'package:nexa/models/product_model.dart';
 import 'package:nexa/services/logger.dart';
 import 'package:nexa/widgets/custom_snack_bar.dart';
+import 'package:nexa/widgets/top_bar.dart';
 
 class ProductPage extends StatefulWidget {
   final ProductModel productModel;
@@ -158,6 +159,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: Column(

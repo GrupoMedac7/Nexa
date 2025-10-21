@@ -85,12 +85,15 @@ class _HomePageState extends State<HomePage> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: CustomSearchBar(
-                controller: _searchController,
-                onChanged: (query) {
-                  setState(() => _filters.searchQuery = query);
-                  _onFiltersChanged();
-                },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: CustomSearchBar(
+                  controller: _searchController,
+                  onChanged: (query) {
+                    setState(() => _filters.searchQuery = query);
+                    _onFiltersChanged();
+                  },
+                ),
               ),
             ),
             SliverToBoxAdapter(
