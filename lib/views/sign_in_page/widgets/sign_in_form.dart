@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nexa/core/themes.dart';
+import 'package:nexa/models/user_model.dart';
+import 'package:nexa/providers/user_provider.dart';
 import 'package:nexa/services/logger.dart';
 import 'package:nexa/widgets/custom_snack_bar.dart';
 import 'package:nexa/widgets/shadowed_field.dart';
@@ -14,6 +16,7 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
+  final UserProvider userProvider = UserProvider();
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -77,10 +80,20 @@ class _SignInFormState extends State<SignInForm> {
     });
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      final user = userCredential.user;
+      if (user == null) throw Exception('Error creating user');
+      UserModel userModel = UserModel(
+        uid: user.uid,
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        isAdmin: false,
+        createdAt: DateTime.now(),
+      );
+      await userProvider.createUser(userModel);
       if (!mounted) return;
       Navigator.of(context).pushReplacementNamed('/');
     } on FirebaseAuthException catch (error, stacktrace) {
