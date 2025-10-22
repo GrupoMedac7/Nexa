@@ -203,6 +203,8 @@ class _ProductPageState extends State<ProductPage> {
                         : Text(
                             widget.productModel.brand,
                             style: Theme.of(context).textTheme.titleMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                   ),
                 ],
