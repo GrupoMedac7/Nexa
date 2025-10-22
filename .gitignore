@@ -49,4 +49,7 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 
 # Firestore configuration
-firestore_seed/nexa-80d73-firebase-adminsdk-fbsvc-88026975f0.json
+firestore_seed/nexa-80d73-firebase-adminsdk-fbsvc-10f6fd5b9d.json
+
+# Python venv
+.env

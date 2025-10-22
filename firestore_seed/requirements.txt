@@ -1,0 +1,9 @@
+# ---Dependencies here---
+# you can install them with the following command:
+#
+# python -m pip install -r requirements.txt
+#
+# or by running the script:
+#
+# scripts/install-dependencies.bat
+firebase_admin>=7.1.0
