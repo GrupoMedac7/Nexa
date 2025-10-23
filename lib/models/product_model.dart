@@ -27,12 +27,12 @@ class Product {
   factory Product.fromFirestore(Map<String, dynamic> data, String id) {
     return Product(
       id: id,
-      name: data['name'] ?? '',
-      description: data['description'] ?? '',
+      name: data['name']?.toString() ?? '',
+      description: data['description']?.toString() ?? '',
       price: (data['price'] ?? 0.0).toDouble(),
-      stock: data['stock'] ?? 0,
-      category: data['category'] ?? '',
-      imageUrl: data['imageUrl'] ?? '',
+      stock: (data['stock'] ?? 0).toInt(),
+      category: data['category']?.toString() ?? '',
+      imageUrl: data['imageUrl']?.toString() ?? '',
       createdAt: data['createdAt']?.toDate() ?? DateTime.now(),
       updatedAt: data['updatedAt']?.toDate() ?? DateTime.now(),
       isActive: data['isActive'] ?? true,

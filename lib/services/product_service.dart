@@ -52,10 +52,10 @@ class ProductService {
 
       final QuerySnapshot snapshot = await query.get();
       List<Product> products = snapshot.docs
-          .map((doc) => Product.fromFirestore(
-                doc.data() as Map<String, dynamic>,
-                doc.id,
-              ))
+          .map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            return Product.fromFirestore(data, doc.id);
+          })
           .toList();
 
       // Aplicar filtro de búsqueda por nombre (no se puede hacer en Firestore directamente)
