@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:nexa/core/themes.dart';
+import 'package:nexa/providers/product_provider.dart';
+import 'package:nexa/providers/user_provider.dart';
+import 'package:nexa/services/auth_gate.dart';
 import 'package:nexa/services/router.dart';
 import 'package:provider/provider.dart';
+
 import 'firebase_options.dart';
-import 'package:nexa/providers/user_provider.dart';
-import 'package:nexa/providers/product_provider.dart';
-import 'package:nexa/services/auth_gate.dart';
-import 'package:nexa/core/themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
