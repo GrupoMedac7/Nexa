@@ -1,0 +1,64 @@
+From 207852413030132c79249cad147cca81345c98ee Mon Sep 17 00:00:00 2001
+From: Your Name <your.email@example.com>
+Date: Fri, 24 Oct 2025 17:33:29 +0100
+Subject: [PATCH] =?UTF-8?q?Resolver=20conflicto=20de=20merge=20en=20main.d?=
+ =?UTF-8?q?art=20y=20limpiar=20configuraci=C3=B3n?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ lib/main.dart | 19 -------------------
+ 1 file changed, 19 deletions(-)
+
+diff --git a/lib/main.dart b/lib/main.dart
+index c81876b..36bc4d1 100644
+--- a/lib/main.dart
++++ b/lib/main.dart
+@@ -1,4 +1,3 @@
+-<<<<<<< HEAD
+ import 'package:firebase_core/firebase_core.dart';
+ import 'package:flutter/material.dart';
+ import 'package:nexa/core/themes.dart';
+@@ -9,13 +8,6 @@ import 'package:nexa/services/router.dart';
+ import 'package:provider/provider.dart';
+ 
+ import 'firebase_options.dart';
+-=======
+-import 'package:firebase_core/firebase_core.dart';
+-import 'package:flutter/material.dart';
+-
+-import 'firebase_options.dart';
+-import 'pages/products_page.dart';
+->>>>>>> FA001
+ 
+ Future<void> main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+@@ -38,7 +30,6 @@ class MyApp extends StatelessWidget {
+ 
+   @override
+   Widget build(BuildContext context) {
+-<<<<<<< HEAD
+     return ValueListenableBuilder<bool>(
+       valueListenable: AppTheme.isDarkMode,
+       builder: (context, isDark, _) {
+@@ -53,16 +44,6 @@ class MyApp extends StatelessWidget {
+           onGenerateRoute: AppRouter.generateRoute,
+         );
+       },
+-=======
+-    return MaterialApp(
+-      title: 'Nexa - Filtros Avanzados',
+-      theme: ThemeData(
+-        primarySwatch: Colors.blue,
+-        useMaterial3: true,
+-      ),
+-      home: const ProductsPage(),
+-      debugShowCheckedModeBanner: false,
+->>>>>>> FA001
+     );
+   }
+ }
+-- 
+2.51.0.windows.2
+
