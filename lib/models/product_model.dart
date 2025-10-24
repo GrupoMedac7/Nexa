@@ -1,6 +1,6 @@
+<<<<<<< HEAD
 import 'package:nexa/core/constants.dart';
 
-// Modelo original de dev
 class ProductModel {
   final String id;
   final String name;
@@ -48,9 +48,7 @@ class ProductModel {
       'imageRef': imageRef
     };
   }
-}
-
-// Modelo extendido para filtros avanzados (FA001)
+=======
 class Product {
   final String id;
   final String name;
@@ -138,4 +136,5 @@ class Product {
   String toString() {
     return 'Product(id: $id, name: $name, stock: $stock, price: $price)';
   }
+>>>>>>> FA001
 }

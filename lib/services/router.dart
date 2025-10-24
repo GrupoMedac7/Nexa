@@ -3,14 +3,12 @@ import 'package:nexa/views/home_page/home_page.dart';
 import 'package:nexa/views/login_page/login_page.dart';
 import 'package:nexa/views/product_page/widgets/product_loader.dart';
 import 'package:nexa/views/sign_in_page/sign_in_page.dart';
-import 'package:nexa/pages/products_page.dart';
 
 class AppRouter {
   static final Map<String, WidgetBuilder> staticRoutes = {
     '/': (context) => const HomePage(),
     '/login': (context) => const LoginPage(),
     '/signin': (context) => const SignInPage(),
-    '/filters': (context) => const ProductsPage(),
   };
 
   static Route<dynamic> generateRoute(RouteSettings settings) {

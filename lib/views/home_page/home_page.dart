@@ -135,15 +135,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, '/filters');
-        },
-        icon: const Icon(Icons.filter_alt),
-        label: const Text('Filtros Avanzados'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
     );
   }
 }
