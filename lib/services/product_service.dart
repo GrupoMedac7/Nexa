@@ -8,7 +8,7 @@ class ProductService {
   final String _collection = 'products';
 
   // Obtener productos con filtros avanzados
-  Future<List<Product>> getProductsWithFilters(ProductFilter filter) async {
+  Future<List<ProductModel>> getProductsWithFilters(ProductFilter filter) async {
     try {
       Query query = _firestore.collection(_collection);
 
@@ -51,10 +51,10 @@ class ProductService {
       query = query.orderBy('stock', descending: true);
 
       final QuerySnapshot snapshot = await query.get();
-      List<Product> products = snapshot.docs
+      List<ProductModel> products = snapshot.docs
           .map((doc) {
             final data = doc.data() as Map<String, dynamic>;
-            return Product.fromFirestore(data, doc.id);
+            return ProductModel.fromMap(data, doc.id);
           })
           .toList();
 
@@ -66,7 +66,7 @@ class ProductService {
               .contains(filter.searchQuery!.toLowerCase()) ||
               product.description
                   .toLowerCase()
-                  .contains(filter.searchQuery!.toLowerCase());
+              .contains(filter.searchQuery!.toLowerCase());
         }).toList();
       }
 

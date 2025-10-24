@@ -287,7 +287,7 @@ class _AdvancedFilterWidgetState extends State<AdvancedFilterWidget> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     decoration: const InputDecoration(
                       labelText: 'Categoría',
                       border: OutlineInputBorder(),
@@ -313,7 +313,7 @@ class _AdvancedFilterWidgetState extends State<AdvancedFilterWidget> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField<bool?>(
-                    value: _isActive,
+                    initialValue: _isActive,
                     decoration: const InputDecoration(
                       labelText: 'Estado',
                       border: OutlineInputBorder(),

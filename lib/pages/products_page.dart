@@ -13,7 +13,7 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   final ProductService _productService = ProductService();
-  List<Product> _products = [];
+  List<ProductModel> _products = [];
   List<String> _categories = [];
   ProductFilter _currentFilter = const ProductFilter();
   bool _isLoading = false;
@@ -97,7 +97,7 @@ class _ProductsPageState extends State<ProductsPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
@@ -112,7 +112,7 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
-  Widget _buildProductCard(Product product) {
+  Widget _buildProductCard(ProductModel product) {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -265,7 +265,7 @@ class _ProductsPageState extends State<ProductsPage> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
