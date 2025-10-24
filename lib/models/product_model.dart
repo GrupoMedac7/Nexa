@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:nexa/core/constants.dart';
 
 class ProductModel {
@@ -10,6 +9,9 @@ class ProductModel {
   final int stock;
   final double price;
   final String imageRef;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final bool isActive;
 
   ProductModel({
     required this.id,
@@ -19,7 +21,10 @@ class ProductModel {
     required this.brand,
     required this.stock,
     required this.price,
-    this.imageRef=DEFAULT_PRODUCT_IMAGE_REF,
+    this.imageRef = DEFAULT_PRODUCT_IMAGE_REF,
+    this.createdAt,
+    this.updatedAt,
+    this.isActive = true,
   });
 
   // Create a ProductModel from a Firestore document
@@ -33,6 +38,9 @@ class ProductModel {
       stock: map['stock'] ?? 0,
       price: (map['price'] ?? 0).toDouble(),
       imageRef: map['imageRef'] ?? DEFAULT_PRODUCT_IMAGE_REF,
+      createdAt: map['createdAt']?.toDate(),
+      updatedAt: map['updatedAt']?.toDate(),
+      isActive: map['isActive'] ?? true,
     );
   }
 
@@ -45,60 +53,7 @@ class ProductModel {
       'brand': brand,
       'stock': stock,
       'price': price,
-      'imageRef': imageRef
-    };
-  }
-=======
-class Product {
-  final String id;
-  final String name;
-  final String description;
-  final double price;
-  final int stock;
-  final String category;
-  final String imageUrl;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final bool isActive;
-
-  Product({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.stock,
-    required this.category,
-    this.imageUrl = '',
-    required this.createdAt,
-    required this.updatedAt,
-    this.isActive = true,
-  });
-
-  // Factory constructor para crear desde Firestore
-  factory Product.fromFirestore(Map<String, dynamic> data, String id) {
-    return Product(
-      id: id,
-      name: data['name']?.toString() ?? '',
-      description: data['description']?.toString() ?? '',
-      price: (data['price'] ?? 0.0).toDouble(),
-      stock: (data['stock'] ?? 0).toInt(),
-      category: data['category']?.toString() ?? '',
-      imageUrl: data['imageUrl']?.toString() ?? '',
-      createdAt: data['createdAt']?.toDate() ?? DateTime.now(),
-      updatedAt: data['updatedAt']?.toDate() ?? DateTime.now(),
-      isActive: data['isActive'] ?? true,
-    );
-  }
-
-  // Convertir a Map para Firestore
-  Map<String, dynamic> toFirestore() {
-    return {
-      'name': name,
-      'description': description,
-      'price': price,
-      'stock': stock,
-      'category': category,
-      'imageUrl': imageUrl,
+      'imageRef': imageRef,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isActive': isActive,
@@ -106,26 +61,28 @@ class Product {
   }
 
   // CopyWith para actualizaciones
-  Product copyWith({
+  ProductModel copyWith({
     String? id,
     String? name,
     String? description,
-    double? price,
-    int? stock,
     String? category,
-    String? imageUrl,
+    String? brand,
+    int? stock,
+    double? price,
+    String? imageRef,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isActive,
   }) {
-    return Product(
+    return ProductModel(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      price: price ?? this.price,
-      stock: stock ?? this.stock,
       category: category ?? this.category,
-      imageUrl: imageUrl ?? this.imageUrl,
+      brand: brand ?? this.brand,
+      stock: stock ?? this.stock,
+      price: price ?? this.price,
+      imageRef: imageRef ?? this.imageRef,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isActive: isActive ?? this.isActive,
@@ -134,7 +91,6 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, stock: $stock, price: $price)';
+    return 'ProductModel(id: $id, name: $name, stock: $stock, price: $price)';
   }
->>>>>>> FA001
 }
