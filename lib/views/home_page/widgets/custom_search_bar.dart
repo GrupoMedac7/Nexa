@@ -14,13 +14,22 @@ class CustomSearchBar extends StatelessWidget {
   InputDecoration _inputDecoration(String hint) => InputDecoration(
     hintText: hint,
     filled: true,
-    fillColor: AppTheme.palette["light_purple"],
+    fillColor: Colors.grey[100],
     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
-      borderSide: BorderSide.none,
+      borderSide: BorderSide(color: Colors.grey[300]!),
     ),
-    hintStyle: TextStyle(color: Colors.grey),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Colors.grey[300]!),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: const BorderSide(color: Colors.blue, width: 2),
+    ),
+    hintStyle: TextStyle(color: Colors.grey[600]),
+    prefixIcon: const Icon(Icons.search, color: Colors.grey),
   );
 
   @override
