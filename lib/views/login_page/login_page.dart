@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexa/views/login_page/widgets/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -6,11 +7,16 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: const Center(
-        child: Text('Login page'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              const SizedBox(height: 86),
+              LoginForm(),
+            ]
+          ),
+        ),
       ),
     );
   }

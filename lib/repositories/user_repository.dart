@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nexa/models/user_model.dart';
+import 'package:nexa/services/logger.dart';
 
 class UserRepository {
   final _firestore = FirebaseFirestore.instance;
@@ -11,25 +12,43 @@ class UserRepository {
       if (doc.exists && doc.data() != null) {
         return UserModel.fromMap(doc.data()!, doc.id);
       }
-    } catch (e) {
-      print('[user repository] Error al obtener user: $e');
+    } catch (e, stacktrace) {
+      String error = '[user repository] Error al obtener user: $e';
+      Logger.error(error, stacktrace);
     }
     return null;
   }
 
   Future<void> saveUser(UserModel user) async {
     try {
-      await _firestore.collection(collection).add(user.toMap());
-    } catch (e) {
-      print('[User repository] Error al guardar usuario: $e');
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(user.toMap());
+    } catch (e, stacktrace) {
+      String error = '[User repository] Error al guardar usuario: $e';
+      Logger.error(error, stacktrace);
     }
   }
 
   Future<void> deleteUser(String userId) async {
     try {
       await _firestore.collection(collection).doc(userId).delete();
-    } catch (e) {
-      print('[User repository] Error al borrar user: $e');
+    } catch (e, stacktrace) {
+      String error = '[User repository] Error al borrar user: $e';
+      Logger.error(error, stacktrace);
+    }
+  }
+
+  Future<void> modifyUser(UserModel user) async {
+    try {
+      await _firestore
+          .collection(collection)
+          .doc(user.uid)
+          .update(user.toMap());
+    } catch (e, stacktrace) {
+      String error = '[User repository] Error al actualizar usuario: $e';
+      Logger.error(error, stacktrace);
     }
   }
 
@@ -42,8 +61,9 @@ class UserRepository {
       }).toList();
 
       return userList;
-    } catch (e) {
-      print('[User repository] Error al obtener usuarios: $e');
+    } catch (e, stacktrace) {
+      String error = '[User repository] Error al obtener usuarios: $e';
+      Logger.error(error, stacktrace);
       return [];
     }
   }

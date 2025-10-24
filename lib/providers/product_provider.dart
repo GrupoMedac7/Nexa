@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nexa/models/product_model.dart';
 import 'package:nexa/repositories/product_repository.dart';
+import 'package:nexa/services/logger.dart';
 
 class ProductProvider with ChangeNotifier {
   final ProductRepository _repository = ProductRepository();
@@ -26,9 +27,59 @@ class ProductProvider with ChangeNotifier {
       } else {
         _error = 'Product no encontrado';
       }
-    } catch (e) {
-      _error = 'Error al cargar producto';
-      print('[Product provider] Error: $e');
+    } catch (e, stacktrace) {
+      _error = 'Error al cargar producto, $e';
+      Logger.error(_error!, stacktrace);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<List<ProductModel>> getProducts({
+    String? searchQuery,
+    String? category,
+    int? minPrice,
+    int? maxPrice,
+    int? minStock,
+    int? maxStock,
+  }) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final products = await _repository.getProducts(
+        searchQuery: searchQuery,
+        category: category,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        minStock: minStock,
+        maxStock: maxStock,
+      );
+      return products;
+    } catch (error, stacktrace) {
+      _error = 'Error al cargar productos';
+      Logger.error(_error!, stacktrace);
+      return [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<List<ProductModel>> getAllproducts() async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final products = await _repository.getAllProducts();
+      return products;
+    } catch (e, stacktrace) {
+      _error = 'Error al cargar productos';
+      Logger.error(_error!, stacktrace);
+      return [];
     } finally {
       _isLoading = false;
       notifyListeners();

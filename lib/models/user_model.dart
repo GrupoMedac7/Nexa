@@ -73,7 +73,10 @@ class UserModel {
     return {
       'email': email,
       'name': name,
-      'preferences': preferences,
+      'preferences': {
+        'notifications': preferences.notifications,
+        'theme': preferences.theme.name,
+      },
       'isAdmin': isAdmin,
       'created_at': Timestamp.fromDate(createdAt)
     };

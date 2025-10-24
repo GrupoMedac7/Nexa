@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nexa/models/user_model.dart';
 import 'package:nexa/repositories/user_repository.dart';
+import 'package:nexa/services/logger.dart';
 
 class UserProvider with ChangeNotifier {
   final UserRepository _repository = UserRepository();
@@ -24,20 +25,57 @@ class UserProvider with ChangeNotifier {
       if (fetchedUser != null) {
         _user = fetchedUser;
       } else {
-        _error = 'User no encontrado';
+        _error = 'Usuario no encontrado';
+        Logger.error(_error!);
       }
-    } catch (e) {
-      _error = 'Error al cargar usuario';
-      print('[User provider] Error: $e');
+    } catch (e, stacktrace) {
+      _error = 'Error al cargar usuario: $e';
+      Logger.error(_error!, stacktrace);
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
+  Future<void> createUser(UserModel user) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      await _repository.saveUser(user);
+    } catch (e, stacktrace) {
+      _error = 'Error al crear usuario: $e';
+      Logger.error(_error!, stacktrace);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> modifyUser(UserModel user) async {
+    _isLoading = true;
+    _error = null;
+
+     try {
+      await _repository.modifyUser(user);
+     } catch (e, stacktrace) {
+      _error = 'Error al modificar usuario: $e';
+      Logger.error(_error!, stacktrace);
+     } finally {
+      _isLoading = false;
+      notifyListeners();
+     }
+  }
+
   void clearUser() {
     _user = null;
     _error = null;
     notifyListeners();
+  }
+
+  bool isAdmin() {
+    if (_user == null) return false;
+    return _user!.isAdmin;
   }
 }

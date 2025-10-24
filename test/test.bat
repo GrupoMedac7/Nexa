@@ -1,0 +1,1 @@
+flutter test test/ --reporter=expanded --concurrency=1

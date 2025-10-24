@@ -1,6 +1,20 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'widgets/search_filter.dart';
-import 'widgets/search_filter_example.dart';
+import 'package:nexa/models/product_model.dart';
+import 'package:nexa/providers/product_provider.dart';
+import 'package:nexa/views/home_page/widgets/custom_search_bar.dart';
+import 'package:nexa/views/home_page/widgets/custom_search_filters.dart';
+import 'package:nexa/views/home_page/widgets/product_list.dart';
+import 'package:nexa/widgets/top_bar.dart';
+
+class SearchFilters {
+  String? searchQuery;
+  String? category;
+  int? minPrice;
+  int? maxPrice;
+  int? minStock;
+  int? maxStock;
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,100 +24,141 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _searchQuery = '';
-  String _selectedFilter = '';
+  final ProductProvider productProvider = ProductProvider();
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _categoriesController = TextEditingController();
+  final TextEditingController _minPriceController = TextEditingController();
+  final TextEditingController _maxPriceController = TextEditingController();
+  final TextEditingController _minStockController = TextEditingController();
+  final TextEditingController _maxStockController = TextEditingController();
+  List<DropdownMenuItem<String>> categoryItems = [];
+  late SearchFilters _filters;
+  Timer? _debounce;
 
-  final List<String> _filterOptions = [
-    'Todos',
-    'Favoritos',
-    'Recientes',
-    'Más populares',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _filters = SearchFilters();
+    _loadProducts();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _categoriesController.dispose();
+    _minPriceController.dispose();
+    _maxPriceController.dispose();
+    _minStockController.dispose();
+    _maxStockController.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _loadProducts() async {
+    try {
+      final products = await productProvider.getAllproducts();
+      final categories = <String>{};
+
+      for (var product in products) {
+        categories.add(product.category);
+      }
+
+      if (mounted) {
+        setState(() {
+          categoryItems = categories
+              .map((cat) => DropdownMenuItem(value: cat, child: Text(cat)))
+              .toList();
+        });
+      }
+    } catch (e) {
+      // Handle error silently or show a snackbar
+      print('Error loading products: $e');
+    }
+  }
+
+  Future<List<ProductModel>> _fetchProducts() async {
+    try {
+      return await productProvider.getProducts(
+        searchQuery: _filters.searchQuery,
+        category: _filters.category,
+        minPrice: _filters.minPrice,
+        maxPrice: _filters.maxPrice,
+        minStock: _filters.minStock,
+        maxStock: _filters.maxStock,
+      );
+    } catch (e) {
+      print('Error fetching products: $e');
+      return [];
+    }
+  }
+
+  void _onFiltersChanged() {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SearchFilterExample(),
+      appBar: TopBar(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: CustomSearchBar(
+                  controller: _searchController,
+                  onChanged: (query) {
+                    setState(() => _filters.searchQuery = query);
+                    _onFiltersChanged();
+                  },
                 ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Search filter at the top
-          SearchFilter(
-            hintText: 'Buscar contenido...',
-            filterOptions: _filterOptions,
-            selectedFilter: _selectedFilter,
-            onSearchChanged: (query) {
-              setState(() {
-                _searchQuery = query;
-              });
-              // Here you would typically filter your data based on the search query
-              print('Search query: $query');
-            },
-            onFilterChanged: (filter) {
-              setState(() {
-                _selectedFilter = filter;
-              });
-              // Here you would typically filter your data based on the selected filter
-              print('Selected filter: $filter');
-            },
-          ),
-          
-          // Main content area
-          Expanded(
-            child: _buildContent(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContent() {
-    // This is where you would build your actual content
-    // For now, we'll show a simple list
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: 20,
-      itemBuilder: (context, index) {
-        final item = 'Elemento ${index + 1}';
-        
-        // Simple search filtering
-        if (_searchQuery.isNotEmpty && 
-            !item.toLowerCase().contains(_searchQuery.toLowerCase())) {
-          return const SizedBox.shrink();
-        }
-        
-        return Card(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Text('${index + 1}'),
+              ),
             ),
-            title: Text(item),
-            subtitle: Text('Descripción del $item'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Seleccionaste: $item')),
-              );
-            },
-          ),
-        );
-      },
+            SliverToBoxAdapter(
+              child: CustomSearchFilters(
+                categories: categoryItems,
+                categoryController: _categoriesController,
+                minPriceController: _minPriceController,
+                maxPriceController: _maxPriceController,
+                minStockController: _minStockController,
+                maxStockController: _maxStockController,
+                onCategoryChanged: (value) {
+                  setState(() => _filters.category = value);
+                  _onFiltersChanged();
+                },
+                onPriceChanged: (min, max) {
+                  setState(() {
+                    _filters.minPrice = min.round();
+                    _filters.maxPrice = max.round();
+                  });
+                  _onFiltersChanged();
+                },
+                onStockChanged: (min, max) {
+                  setState(() {
+                    _filters.minStock = min.round();
+                    _filters.maxStock = max.round();
+                  });
+                  _onFiltersChanged();
+                },
+              ),
+            ),
+            ProductList(
+              key: ValueKey(
+                "${_filters.searchQuery}-${_filters.category}-"
+                "${_filters.minPrice}-${_filters.maxPrice}-"
+                "${_filters.minStock}-${_filters.maxStock}",
+              ),
+              fetchProducts: _fetchProducts,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
