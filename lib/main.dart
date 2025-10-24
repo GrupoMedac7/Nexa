@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nexa/core/themes.dart';
@@ -9,13 +8,6 @@ import 'package:nexa/services/router.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
-=======
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-
-import 'firebase_options.dart';
-import 'pages/products_page.dart';
->>>>>>> FA001
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +30,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return ValueListenableBuilder<bool>(
       valueListenable: AppTheme.isDarkMode,
       builder: (context, isDark, _) {
@@ -53,16 +44,6 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: AppRouter.generateRoute,
         );
       },
-=======
-    return MaterialApp(
-      title: 'Nexa - Filtros Avanzados',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
-      home: const ProductsPage(),
-      debugShowCheckedModeBanner: false,
->>>>>>> FA001
     );
   }
 }
