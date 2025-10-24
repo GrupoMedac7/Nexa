@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nexa/core/themes.dart';
 import 'package:nexa/widgets/theme_switch.dart';
+import 'package:nexa/pages/stock_control_page.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({super.key});
@@ -84,6 +85,18 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
+        IconButton(
+          icon: const Icon(Icons.inventory),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const StockControlPage(),
+              ),
+            );
+          },
+          tooltip: 'Control de Stock',
+        ),
         ThemeSwitch(),
         IconButton(
           icon: const Icon(Icons.power_settings_new_outlined),

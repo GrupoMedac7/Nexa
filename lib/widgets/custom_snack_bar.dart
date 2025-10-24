@@ -41,4 +41,17 @@ class CustomSnackBar {
       ),
     );
   }
+
+  // Métodos de conveniencia
+  static void showSuccess(BuildContext context, String message) {
+    show(context, message, mode: CustomSnackBarMode.succ);
+  }
+
+  static void showError(BuildContext context, String message) {
+    show(context, message, mode: CustomSnackBarMode.err);
+  }
+
+  static void showInfo(BuildContext context, String message) {
+    show(context, message, mode: CustomSnackBarMode.def);
+  }
 }
