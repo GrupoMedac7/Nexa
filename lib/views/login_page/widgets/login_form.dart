@@ -96,51 +96,75 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 16),
 
           // Contraseña
-          Stack(
-            alignment: Alignment.centerRight,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: .08),
-                      blurRadius: 10,
-                      offset: const Offset(0, 6),
+              if (!_obscurePassword)
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, bottom: 5),
+                  child: Text(
+                    "Contraseña visible",
+                    style: TextStyle(
+                      color: AppTheme.palette["dark_purple"],
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                  borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                child: TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    hintText: "••••••••",
-                    filled: true,
-                    fillColor: AppTheme.palette["light_purple"],
-                    contentPadding: const EdgeInsets.only(left: 20, right: 60, top: 18, bottom: 18),
-                    border: OutlineInputBorder(
+              Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: .08),
+                          blurRadius: 10,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
                     ),
-                    hintStyle: TextStyle(color: Colors.grey),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      decoration: InputDecoration(
+                        hintText: _obscurePassword ? "••••••••" : "Ingresa tu contraseña",
+                        filled: true,
+                        fillColor: AppTheme.palette["light_purple"],
+                        contentPadding: const EdgeInsets.only(left: 20, right: 60, top: 18, bottom: 18),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              Positioned(
-                right: 8,
-                child: IconButton(
-                  icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    color: AppTheme.palette["dark_purple"],
-                    size: 22,
+                  Positioned(
+                    right: 8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _obscurePassword ? Colors.grey.withOpacity(0.1) : AppTheme.palette["dark_purple"]?.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          color: _obscurePassword ? Colors.grey[600] : AppTheme.palette["dark_purple"],
+                          size: 22,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                        tooltip: _obscurePassword ? "Mostrar contraseña" : "Ocultar contraseña",
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                ),
+                ],
               ),
             ],
           ),
