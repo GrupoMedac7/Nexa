@@ -21,7 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   bool _loading = false;
   bool _obscurePassword = true;
 
-  InputDecoration _inputDecoration(String hint) => InputDecoration(
+  InputDecoration _inputDecoration(String hint, {Widget? suffixIcon}) => InputDecoration(
     hintText: hint,
     filled: true,
     fillColor: AppTheme.palette["light_purple"],
@@ -31,6 +31,11 @@ class _LoginFormState extends State<LoginForm> {
       borderSide: BorderSide.none,
     ),
     hintStyle: TextStyle(color: Colors.grey),
+    suffixIcon: suffixIcon,
+    suffixIconConstraints: const BoxConstraints(
+      minWidth: 48,
+      minHeight: 48,
+    ),
   );
 
   void onLogin() async {
@@ -95,17 +100,23 @@ class _LoginFormState extends State<LoginForm> {
             field: TextFormField(
               controller: _passwordController,
               obscureText: _obscurePassword,
-              decoration: _inputDecoration("••••••••").copyWith(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey[600],
+              decoration: _inputDecoration(
+                "••••••••",
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.grey[700],
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                    splashRadius: 20,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
                 ),
               ),
               style: TextStyle(color: Colors.black),
