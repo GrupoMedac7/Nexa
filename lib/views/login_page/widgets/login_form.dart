@@ -96,35 +96,44 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 16),
 
           // Contraseña
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: .08),
-                  blurRadius: 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: TextFormField(
-              controller: _passwordController,
-              obscureText: _obscurePassword,
-              decoration: InputDecoration(
-                hintText: "••••••••",
-                filled: true,
-                fillColor: AppTheme.palette["light_purple"],
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                border: OutlineInputBorder(
+          Stack(
+            alignment: Alignment.centerRight,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: .08),
+                      blurRadius: 10,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
                 ),
-                hintStyle: TextStyle(color: Colors.grey),
-                suffixIcon: IconButton(
+                child: TextFormField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
+                    hintText: "••••••••",
+                    filled: true,
+                    fillColor: AppTheme.palette["light_purple"],
+                    contentPadding: const EdgeInsets.only(left: 20, right: 60, top: 18, bottom: 18),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Positioned(
+                right: 8,
+                child: IconButton(
                   icon: Icon(
                     _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey[700],
-                    size: 24,
+                    color: AppTheme.palette["dark_purple"],
+                    size: 22,
                   ),
                   onPressed: () {
                     setState(() {
@@ -133,8 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 ),
               ),
-              style: TextStyle(color: Colors.black),
-            ),
+            ],
           ),
 
           const SizedBox(height: 24),
