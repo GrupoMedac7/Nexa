@@ -19,6 +19,7 @@ class _LoginFormState extends State<LoginForm> {
   final _passwordController = TextEditingController();
 
   bool _loading = false;
+  bool _obscurePassword = true;
 
   InputDecoration _inputDecoration(String hint) => InputDecoration(
     hintText: hint,
@@ -93,8 +94,20 @@ class _LoginFormState extends State<LoginForm> {
           ShadowedField(
             field: TextFormField(
               controller: _passwordController,
-              obscureText: true,
-              decoration: _inputDecoration("••••••••"),
+              obscureText: _obscurePassword,
+              decoration: _inputDecoration("••••••••").copyWith(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.grey[600],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
+              ),
               style: TextStyle(color: Colors.black),
             ),
           ),
