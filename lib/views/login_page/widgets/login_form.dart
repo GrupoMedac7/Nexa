@@ -65,6 +65,132 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
+  void _showForgotPasswordDialog() {
+    final TextEditingController emailController = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            "Recuperar contraseña",
+            style: TextStyle(
+              color: AppTheme.palette["dark_blue"],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.",
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: .08),
+                      blurRadius: 10,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    hintText: "email@example.com",
+                    filled: true,
+                    fillColor: AppTheme.palette["light_purple"],
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  style: TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Cancelar",
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _sendPasswordResetEmail(emailController.text.trim());
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.palette["dark_purple"],
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: const Text("Enviar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _sendPasswordResetEmail(String email) async {
+    if (email.isEmpty) {
+      CustomSnackBar.show(
+        context,
+        'Por favor ingresa tu email',
+        mode: CustomSnackBarMode.err,
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      if (!mounted) return;
+      CustomSnackBar.show(
+        context,
+        'Email de recuperación enviado. Revisa tu bandeja de entrada.',
+        mode: CustomSnackBarMode.succ,
+      );
+    } on FirebaseAuthException catch (error, stacktrace) {
+      if (!mounted) return;
+      String message = 'Error al enviar el email';
+      switch (error.code) {
+        case 'user-not-found':
+          message = 'No existe una cuenta con este email';
+          break;
+        case 'invalid-email':
+          message = 'Email inválido';
+          break;
+        case 'too-many-requests':
+          message = 'Demasiados intentos. Intenta más tarde';
+          break;
+      }
+      CustomSnackBar.show(
+        context,
+        message,
+        mode: CustomSnackBarMode.err,
+      );
+      Logger.error(error.code, stacktrace);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -196,6 +322,25 @@ class _LoginFormState extends State<LoginForm> {
                   ),
           ),
           const SizedBox(height: 16),
+
+          // ¿Has olvidado tu contraseña?
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: _showForgotPasswordDialog,
+              child: Text(
+                "¿Has olvidado tu contraseña?",
+                style: TextStyle(
+                  color: AppTheme.palette["dark_purple"],
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
 
           // Registro
           Row(
