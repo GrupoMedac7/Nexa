@@ -96,27 +96,41 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 16),
 
           // Contraseña
-          ShadowedField(
-            field: TextFormField(
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .08),
+                  blurRadius: 10,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: TextFormField(
               controller: _passwordController,
               obscureText: _obscurePassword,
-              decoration: _inputDecoration(
-                "••••••••",
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                      color: Colors.grey[700],
-                      size: 24,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                    splashRadius: 20,
+              decoration: InputDecoration(
+                hintText: "••••••••",
+                filled: true,
+                fillColor: AppTheme.palette["light_purple"],
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                hintStyle: TextStyle(color: Colors.grey),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.grey[700],
+                    size: 24,
                   ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
                 ),
               ),
               style: TextStyle(color: Colors.black),
